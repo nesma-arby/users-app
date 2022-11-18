@@ -1,0 +1,29 @@
+
+
+.title{
+    text-align: center;
+    text-transform: capitalize;
+    padding: 10px;
+}
+
+ul{
+        padding: 10px;
+        list-style: none;
+        text-align: left;
+        height: 300px;
+        overflow: scroll;
+    li{
+        // background: cornflowerblue;
+        color: rgb(189, 42, 42);
+        padding: 14px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-bottom: 10px;
+        border-bottom: 1px solid;
+        display: flex;
+        justify-content: space-between;
+        &:hover{
+            background: #dae1e1;
+        }
+    }
+}
