@@ -32,7 +32,7 @@ const Register = () => {
          setText('Thanks for registeration')
        }
     }, (error) => {
-  console.log(error);
+         console.log(error);
    });
 
   }

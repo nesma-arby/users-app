@@ -13,9 +13,15 @@ const Home = () => {
     const [name, setName] = useState("");
     const [mail, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [id, setId] = useState("");
 
+    interface IUser {
+      id:string ;
+      name:string ;
+      mail:string ;
+      password:string
+    }
 
-    let selectedUser = {id:'',name:'',mail:'',password:''} ;
 
     const getAllUsers = () =>{
         axios.get('http://localhost:3000/users').then((response) => {
@@ -32,9 +38,11 @@ const Home = () => {
        setUsers(result)
     }
 
-    const handleUpdate = (userData:{id:'',name:'',mail:'',password:''}) =>{
-        selectedUser = userData;
-        console.log(selectedUser)
+    const handleSelect = (userData:IUser) =>{
+        setName(userData?.name);
+        setEmail(userData?.mail);
+        setPassword(userData?.password);
+        setId(userData?.id);
      }
 
 
@@ -43,13 +51,39 @@ const Home = () => {
     },[])
 
 
+    const handleSaveEdit = async(userId:any) =>{
+      await axios.put(`http://localhost:3000/users/${userId}`, {
+        id:userId,
+        name,
+        mail,
+        password
+    });
+
+    const index:number = users.findIndex(object => {
+      return object.id === userId;
+    });
+
+    users[index] ={id:userId,name:name , mail:mail,password:password}
+
+    setUsers([...users]);
+
+    clearForm()
+
+
+    }
+
+    const clearForm = () =>{
+      setName('');
+      setEmail('');
+      setPassword('');
+    }
 
     return (
         <div>
             <h3 className="title">All users</h3>
             <ul>
               {users?.map(user => (
-               <li key={user.id} onClick={()=>handleUpdate(user)}>
+               <li key={user.id} onClick={()=>handleSelect(user)}>
                 {user.name}
                 <Button variant="danger" type="button" onClick={()=> handleDelete(user.id)}>
                    Delete
@@ -59,6 +93,8 @@ const Home = () => {
             ))}
             </ul>
             
+     {/* **************************************************************** */}
+
             <h4 className="title">Update User</h4>
 
             <Form className="">
@@ -67,7 +103,7 @@ const Home = () => {
             <Form.Label className="label">User Name</Form.Label>
             <Form.Control
             type="text"
-            value={selectedUser?.name}
+            value={name}
             onChange={e =>setName(e.target.value)}
 
             />
@@ -77,7 +113,7 @@ const Home = () => {
             <Form.Label className="label">Email address</Form.Label>
             <Form.Control
             type="email"
-            value={selectedUser?.mail}
+            value={mail}
             onChange={(e) => setEmail(e.target.value)}
             />
             </Form.Group>
@@ -86,13 +122,13 @@ const Home = () => {
             <Form.Label className="label">Password</Form.Label>
             <Form.Control
             type="password"
-            value={selectedUser?.password}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             />
             </Form.Group>
 
-            <Button variant="primary" type="button" >
-            Save
+            <Button variant="primary" type="button" onClick={()=>handleSaveEdit(id)}>
+              Save
             </Button>
 
 
