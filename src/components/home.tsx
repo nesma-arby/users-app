@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import'../styles/home.scss';
@@ -8,8 +8,10 @@ import Form from "react-bootstrap/Form";
 
 const Home = () => {
 
-    const [users,setUsers] = useState<any[]>([])
-    
+    const [users,setUsers] = useState<any[]>([]);
+    const [disabledState,setDisabledState] = useState(true)
+
+
     const [name, setName] = useState("");
     const [mail, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,7 +34,9 @@ const Home = () => {
     }
 
      const handleDelete = async(userId:any) =>{
-       await axios.delete(`http://localhost:3000/users/${userId}`);
+
+      await axios.delete(`http://localhost:3000/users/${userId}`)
+
        const result = users.filter(user => user.id !== userId);
        console.log(result)
        setUsers(result)
@@ -43,6 +47,7 @@ const Home = () => {
         setEmail(userData?.mail);
         setPassword(userData?.password);
         setId(userData?.id);
+        setDisabledState(false);
      }
 
 
@@ -52,6 +57,9 @@ const Home = () => {
 
 
     const handleSaveEdit = async(userId:any) =>{
+
+      setDisabledState(true);
+
       await axios.put(`http://localhost:3000/users/${userId}`, {
         id:userId,
         name,
@@ -79,15 +87,20 @@ const Home = () => {
     }
 
     return (
-        <div>
-            <h3 className="title">All users</h3>
+        <div className="wrapper">
+           
             <ul>
+            <h3 className="title">All users</h3>
               {users?.map(user => (
-               <li key={user.id} onClick={()=>handleSelect(user)}>
-                {user.name}
-                <Button variant="danger" type="button" onClick={()=> handleDelete(user.id)}>
+               <li key={user.id} >
+
+                <div  onClick={()=>handleSelect(user)}>{user.name}</div>
+                
+                <Button variant="danger" type="button" 
+                        onClick={()=> handleDelete(user.id)}>
                    Delete
                 </Button>
+
                
                </li>
             ))}
@@ -95,9 +108,11 @@ const Home = () => {
             
      {/* **************************************************************** */}
 
+
+            <Form className="updateForm"> 
+
             <h4 className="title">Update User</h4>
 
-            <Form className="">
 
             <Form.Group className="mb-3">
             <Form.Label className="label">User Name</Form.Label>
@@ -127,7 +142,8 @@ const Home = () => {
             />
             </Form.Group>
 
-            <Button variant="primary" type="button" onClick={()=>handleSaveEdit(id)}>
+            <Button variant="primary" type="button" disabled={disabledState}
+            onClick={()=>handleSaveEdit(id)}>
               Save
             </Button>
 

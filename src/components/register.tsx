@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import "../styles/register.scss";
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { Navigate } from "react-router-dom";
 
 const Register = () => {
 
@@ -15,35 +14,57 @@ const Register = () => {
   const [mail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [text,setText] = useState('');
+  const [error,setError] = useState('');
 
   // send post method
   const handleSubmit = (props:any) =>{
 
-    setText('')
+    setText('');
+    setError('');
 
-    axios.post('http://localhost:3000/users',{
-      id:uuidv4().slice(0,8),
-      name,
-      mail,
-      password
-    }).then((response) => {
-       console.log(response);
-       if(response.status === 201){
-         setText('Thanks for registeration')
-       }
-    }, (error) => {
-         console.log(error);
-   });
+    if(name === '' || mail === '' || password === ''){
+
+      setError('Please Enter All Data ');
+      return ; 
+
+    } 
+
+      axios.post('http://localhost:3000/users',{
+        id:uuidv4().slice(0,8),
+        name,
+        mail,
+        password
+      }).then((response) => {
+         console.log(response);
+         if(response.status === 201){
+           setText('Thanks for registeration');
+           setTimeout(()=>{
+            clearForm()
+           },1000)
+         }
+      }, (error) => {
+           console.log(error);
+     });
+
 
   }
 
 
+  const clearForm = () =>{
+    setName('');
+    setEmail('');
+    setPassword('');
+    setText('')
+  }
+
   return (
     <div className="formContainer">
+
       <Form className="registerForm">
 
+      <p style={{color:'red'}}>{error}</p>
 
-        <p>{text}</p>
+      <p style={{color:'green'}}>{text}</p>
 
         <Form.Group className="mb-3">
           <Form.Label className="label">User Name</Form.Label>
@@ -52,6 +73,7 @@ const Register = () => {
             placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </Form.Group>
 
@@ -62,6 +84,7 @@ const Register = () => {
             placeholder="Enter email"
             value={mail}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </Form.Group>
 
@@ -72,14 +95,17 @@ const Register = () => {
             placeholder="Password"
             name={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+
           />
         </Form.Group>
 
         <Button variant="primary" type="button" onClick={handleSubmit}>
-          Save
+          Sign Up
         </Button>
 
-        <Link className="link" to="/">
+
+        <Link className="link" to="/login">
           Back to Login
         </Link>
       </Form>

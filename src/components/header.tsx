@@ -18,7 +18,8 @@ const Header = () => {
 
   const handleLogOut = () =>{
     localStorage.removeItem('username');
-    window.location.href = '/';
+    localStorage.removeItem('authenticated');
+    window.location.href = '/login';
   }
 
 
@@ -32,13 +33,17 @@ const Header = () => {
     return (
       <Navbar bg="light" expand="lg">
       <Container>
+        
         <Navbar.Brand href="#home"> {t('greeting')},{name} </Navbar.Brand>
+
+        <Nav.Link onClick={handleLogOut}>{t('logout')}</Nav.Link>
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className={locale === 'en' ? 'ms-auto' : 'me-auto'}>
 
-            <Nav.Link onClick={handleLogOut}>{t('logout')}</Nav.Link>
+           <Nav className={locale === 'en' ? 'ms-auto' : 'me-auto'}>
+
 
             <NavDropdown title={t('language')} id="basic-nav-dropdown">
 

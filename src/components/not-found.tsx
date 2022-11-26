@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import'../styles/not-found.scss';
+
 
 const NotFound = () => {
     return (
