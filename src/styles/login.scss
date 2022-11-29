@@ -2,31 +2,49 @@
 // mobile first
 
 @mixin calcBorder($r) {
-    border: $r dashed blue;
+    border: $r solid gainsboro;
 }
 
-
-.formContainer{
+.formContainerStyle{
     display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - 60px);
+    background-image: url('../bg.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
+}
+
+.formStyle{
+    width: 80%;
+    margin: auto;
+    @include calcBorder(5px);
+    padding: 20px;
+    color: #fff;
+}
+
+
+
+.formContainer{
+
+    @extend .formContainerStyle ;
 
     .loginForm{
-        width: 80%;
-        margin: auto;
-        @include calcBorder(5px);
-        padding: 20px;
-    
-        .label{
-            text-align: left;
-            display: block;
-        }
+       
+        @extend .formStyle;
 
         .link{
             display: block;
             padding-top: 20px;
           text-decoration: none;
+          text-align: center;
+          color: #fff;
+         }
+
+         button{
+            display: block;
+            margin: auto;
          }
         
     

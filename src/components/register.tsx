@@ -6,9 +6,12 @@ import { Link } from "react-router-dom";
 import "../styles/register.scss";
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import i18n from '../i18n';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
 
+  const { t } = useTranslation();
 
   const [name, setName] = useState("");
   const [mail, setEmail] = useState("");
@@ -62,15 +65,14 @@ const Register = () => {
 
       <Form className="registerForm">
 
-      <p style={{color:'red'}}>{error}</p>
+      <p style={{color:'red' , textAlign:'center'}}>{error}</p>
 
-      <p style={{color:'green'}}>{text}</p>
+      <p style={{color:'#fff' , textAlign:'center'}}>{text}</p>
 
         <Form.Group className="mb-3">
-          <Form.Label className="label">User Name</Form.Label>
+          <Form.Label className="label">{t('userName')}</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -78,10 +80,9 @@ const Register = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label className="label">Email address</Form.Label>
+          <Form.Label className="label">{t('email')}</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter email"
             value={mail}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -89,10 +90,9 @@ const Register = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label className="label">Password</Form.Label>
+          <Form.Label className="label">{t('password')}</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Password"
             name={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -101,12 +101,12 @@ const Register = () => {
         </Form.Group>
 
         <Button variant="primary" type="button" onClick={handleSubmit}>
-          Sign Up
+          {t('signUp')}
         </Button>
 
 
         <Link className="link" to="/login">
-          Back to Login
+          {t('signIn')}
         </Link>
       </Form>
     </div>

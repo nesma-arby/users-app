@@ -1,6 +1,16 @@
 {
     "greeting": "مرحبا",
     "logout": "تسجيل الخروج",
-    "language": " اللغة"
+    "language": " اللغة",
+    "allUsers":"كل المستخدمين",
+    "updateUser":"تعديل المستخدم",
+    "userName":"اسم المستخدم",
+    "email":"البريد الالكترونى",
+    "password":"كلمة السر",
+    "delete":"مسح",
+    "save" :"حفظ",
+    "registerAccount":"تسجيل الحساب",
+    "signIn" :"تسجيل الدخول",
+    "signUp":"تسجيل الحساب"
   }
   

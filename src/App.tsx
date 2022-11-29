@@ -1,19 +1,17 @@
-import React, { Suspense, useState } from 'react';
-// import logo from './logo.svg';
+import React, { Suspense, useContext, useState } from 'react';
 import './App.scss';
-// import { Button } from 'react-bootstrap';
 import Header from './components/header';
 import Login from './components/login';
 import Register from './components/register';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from './components/home';
-import { useEffect, useContext } from 'react';
 import i18n from './i18n';
 import Loading from './components/loading';
 import LocaleContext from './LocaleContext';
 import { ThemeProvider } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import NotFound from './components/not-found';
+import Context, { UserContext } from './components/user-context';
 
 
 function App() {
@@ -23,15 +21,13 @@ function App() {
 
   i18n.on('languageChanged', (lng) => setLocale(i18n.language));
 
-  // const params = window.location.pathname;
-
-  // const [authUser,setAuthUser] = useState<string | null>(null)
-
- 
+  const user  = useContext(UserContext)
+  
 
   return (
     <div className="App">
 
+  
       <LocaleContext.Provider value={{ locale }}>
         <Suspense fallback={<Loading />}>
 
@@ -43,7 +39,8 @@ function App() {
           <ThemeProvider dir={locale === 'en' ? 'ltr' : 'rtl'}>
 
 
-            {(  localStorage.getItem('authenticated')) ? <Header/> : ''}
+            {user?.loggedIn === true ? <Header /> : 'no'}
+             
 
             <BrowserRouter>
 
@@ -65,6 +62,7 @@ function App() {
 
         </Suspense>
       </LocaleContext.Provider>
+
 
     </div>
   )

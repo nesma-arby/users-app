@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "29052d42",
-      "name": "heba",
+      "name": "heba ahmed ",
       "mail": "heba",
       "password": "111"
     },
@@ -13,16 +13,10 @@
       "password": "111"
     },
     {
-      "id": "48a6cb5c",
-      "name": "neni",
-      "mail": "neno",
+      "id": "5f9b93f6",
+      "name": "nesma",
+      "mail": "nesma@gmail.com",
       "password": "111"
-    },
-    {
-      "id": "f812c4b2",
-      "name": "uuu",
-      "mail": "jj",
-      "password": "222"
     }
   ]
 }

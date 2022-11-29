@@ -1,6 +1,19 @@
 .wrapper{
     display: flex;
     justify-content: space-between;
+
+    background-image: url('../photo.jpeg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
+    height: calc(100vh - 60px);
+
+    @media(max-width:768px) {
+        display: block;
+        justify-self: unset;
+        height: 100%;
+    }
+
     .title{
         text-align: center;
         text-transform: capitalize;
@@ -13,6 +26,10 @@
             text-align: left;
             height: auto;
             width: 40%;
+
+            @media(max-width:768px) {
+                width: 100%;
+            }
     
         li{
             color: black;
@@ -34,9 +51,8 @@
         width: 40%;
         padding: 10px;
 
-        .label{
-            text-align: left;
-            display: block;
+        @media(max-width:768px) {
+            width: 100%;
         }
     }
 }

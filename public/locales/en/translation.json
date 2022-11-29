@@ -1,5 +1,15 @@
 {
     "greeting": "Hello",
     "logout": "Log Out",
-    "language": "Language"
+    "language": "Language",
+    "allUsers":"All Users",
+    "updateUser":"Update User",
+    "userName":"User Name",
+    "email":"Email",
+    "password":"Password",
+    "delete":"Delete",
+    "save" :"Save",
+    "registerAccount":"Register Account",
+    "signIn" :"Sign In",
+    "signUp":"Sign Up"
   }

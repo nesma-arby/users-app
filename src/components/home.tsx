@@ -4,12 +4,16 @@ import axios from 'axios';
 import'../styles/home.scss';
 import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-
+import i18n from '../i18n';
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
 
     const [users,setUsers] = useState<any[]>([]);
+
+
     const [disabledState,setDisabledState] = useState(true)
+    const { t } = useTranslation();
 
 
     const [name, setName] = useState("");
@@ -25,13 +29,13 @@ const Home = () => {
     }
 
 
-    const getAllUsers = () =>{
-        axios.get('http://localhost:3000/users').then((response) => {
-            setUsers([...users, ...response.data])
-          }, (error) => {
-            console.log(error);
-          });
-    }
+    // const getAllUsers = () =>{
+    //     axios.get('http://localhost:3000/users').then((response) => {
+    //         setUsers([...users, ...response.data])
+    //       }, (error) => {
+    //         console.log(error);
+    //       });
+    // }
 
      const handleDelete = async(userId:any) =>{
 
@@ -51,10 +55,18 @@ const Home = () => {
      }
 
 
-    useEffect(()=>{
-    getAllUsers();
-    },[])
+    // useEffect(()=>{
+    // getAllUsers();
+    // },[])
 
+    useEffect(() => {
+      (async () => {
+      const response = await axios.get(
+        'http://localhost:3000/users'
+      );
+      setUsers(response.data);
+      })();
+      }, []);
 
     const handleSaveEdit = async(userId:any) =>{
 
@@ -86,75 +98,79 @@ const Home = () => {
       setPassword('');
     }
 
-    return (
-        <div className="wrapper">
-           
-            <ul>
-            <h3 className="title">All users</h3>
-              {users?.map(user => (
-               <li key={user.id} >
+    return users ? (
+      <div className="wrapper">
+         
+          <ul>
+          <h5 className="title">{t('allUsers')}</h5>
+            {users?.map(user => (
+             <li key={user.id} data-testid='user'>
 
-                <div  onClick={()=>handleSelect(user)}>{user.name}</div>
-                
-                <Button variant="danger" type="button" 
-                        onClick={()=> handleDelete(user.id)}>
-                   Delete
-                </Button>
+              <div  onClick={()=>handleSelect(user)}>{user.name}</div>
+              
+              <Button variant="danger" type="button" 
+                      onClick={()=> handleDelete(user.id)}>
+                 {t('delete')}
+              </Button>
 
-               
-               </li>
-            ))}
-            </ul>
-            
-     {/* **************************************************************** */}
-
-
-            <Form className="updateForm"> 
-
-            <h4 className="title">Update User</h4>
+             
+             </li>
+          ))}
+          </ul>
+          
+   {/* **************************************************************** */}
 
 
-            <Form.Group className="mb-3">
-            <Form.Label className="label">User Name</Form.Label>
-            <Form.Control
-            type="text"
-            value={name}
-            onChange={e =>setName(e.target.value)}
+          <Form className="updateForm"> 
 
-            />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-            <Form.Label className="label">Email address</Form.Label>
-            <Form.Control
-            type="email"
-            value={mail}
-            onChange={(e) => setEmail(e.target.value)}
-            />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-            <Form.Label className="label">Password</Form.Label>
-            <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            />
-            </Form.Group>
-
-            <Button variant="primary" type="button" disabled={disabledState}
-            onClick={()=>handleSaveEdit(id)}>
-              Save
-            </Button>
+          <h5 className="title">{t('updateUser')}</h5>
 
 
-            </Form>
+          <Form.Group className="mb-3">
+          <Form.Label className="label">{t('userName')}</Form.Label>
+          <Form.Control
+          type="text"
+          value={name}
+          onChange={e =>setName(e.target.value)}
+
+          />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+          <Form.Label className="label">{t('email')}</Form.Label>
+          <Form.Control
+          type="email"
+          value={mail}
+          onChange={(e) => setEmail(e.target.value)}
+          />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+          <Form.Label className="label">{t('password')}</Form.Label>
+          <Form.Control
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          />
+          </Form.Group>
+
+          <Button variant="primary" type="button" disabled={disabledState}
+          onClick={()=>handleSaveEdit(id)}>
+            {t('save')}
+          </Button>
+
+
+          </Form>
+
 
  
-   
-        </div>
-    );
-};
+      </div>
+  ) : (<p>Loading....</p>);
+
+
+      };
+
+ 
 
 Home.propTypes = {
     

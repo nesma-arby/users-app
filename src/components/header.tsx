@@ -4,18 +4,20 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useTranslation } from 'react-i18next';
 import LocaleContext from '../LocaleContext';
 import i18n from '../i18n';
+import { useTranslation } from 'react-i18next';
 
-const Header = () => {
 
-  const name = localStorage.getItem('username') || null;
+const Header = (props:any) => {
+
+  const name = localStorage.getItem('username') ;
 
   const { t } = useTranslation();
   const { locale } = useContext(LocaleContext);
 
 
+ 
   const handleLogOut = () =>{
     localStorage.removeItem('username');
     localStorage.removeItem('authenticated');
@@ -31,12 +33,15 @@ const Header = () => {
   }
 
     return (
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg" data-cy='nav-bar'>
+
       <Container>
         
-        <Navbar.Brand href="#home"> {t('greeting')},{name} </Navbar.Brand>
+    {localStorage.getItem("authenticated") &&  
+    <Navbar.Brand href="#home"> {t('greeting')},{name} </Navbar.Brand> }
 
-        <Nav.Link onClick={handleLogOut}>{t('logout')}</Nav.Link>
+     {localStorage.getItem("authenticated") &&
+      <Nav.Link onClick={handleLogOut} style={{padding:'0 30px'}}>{t('logout')}</Nav.Link>}
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
