@@ -21,7 +21,6 @@ function App() {
 
   i18n.on('languageChanged', (lng) => setLocale(i18n.language));
 
-  const user  = useContext(UserContext)
   
 
   return (
@@ -39,7 +38,7 @@ function App() {
           <ThemeProvider dir={locale === 'en' ? 'ltr' : 'rtl'}>
 
 
-            {user?.loggedIn === true ? <Header /> : 'no'}
+            <Header /> 
              
 
             <BrowserRouter>
