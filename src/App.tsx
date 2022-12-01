@@ -1,4 +1,4 @@
-import React, { Suspense, useContext, useState } from 'react';
+import React, { createContext, Suspense, useContext, useState } from 'react';
 import './App.scss';
 import Header from './components/header';
 import Login from './components/login';
@@ -11,7 +11,7 @@ import LocaleContext from './LocaleContext';
 import { ThemeProvider } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import NotFound from './components/not-found';
-import Context, { UserContext } from './components/user-context';
+import authContext from "./authContext";
 
 
 function App() {
@@ -21,50 +21,62 @@ function App() {
 
   i18n.on('languageChanged', (lng) => setLocale(i18n.language));
 
-  
+  const [authenticated, setAuthenticated] = useState(false);
+
 
   return (
     <div className="App">
 
-  
-      <LocaleContext.Provider value={{ locale }}>
-        <Suspense fallback={<Loading />}>
+    <authContext.Provider value={{ authenticated, setAuthenticated }}> 
 
-          <Helmet htmlAttributes={{
-            lang: locale,
-            dir: locale === 'en' ? 'ltr' : 'rtl'
-          }} />
+    <div> user is {`${authenticated ? "" : "not"} authenticated`} </div>
 
-          <ThemeProvider dir={locale === 'en' ? 'ltr' : 'rtl'}>
+        <LocaleContext.Provider value={{ locale }}>
+
+          <Suspense fallback={<Loading />}>
+
+            <Helmet htmlAttributes={{
+              lang: locale,
+              dir: locale === 'en' ? 'ltr' : 'rtl'
+            }} />
+
+            <ThemeProvider dir={locale === 'en' ? 'ltr' : 'rtl'}>
 
 
-            <Header /> 
-             
 
-            <BrowserRouter>
+              <Header /> 
+                
 
-                  <Routes>
+              <BrowserRouter>
 
-                    <Route path="/login" element={<Login />}> </Route>
+                    <Routes>
 
-                    <Route path="/register" element={<Register />}></Route>
+                      <Route path="/login" element={<Login />}> </Route>
 
-                    <Route path="/" element={<Home />}> </Route>
+                      <Route path="/register" element={<Register />}></Route>
 
-                    <Route path="*" element={< NotFound />} />
+                      <Route path="/" element={<Home />}> </Route>
 
-                  </Routes>
+                      <Route path="*" element={< NotFound />} />
 
-            </BrowserRouter>
+                    </Routes>
 
-          </ThemeProvider>
+              </BrowserRouter>
 
-        </Suspense>
-      </LocaleContext.Provider>
+
+
+            </ThemeProvider>
+
+          </Suspense>
+
+        </LocaleContext.Provider>
+    </authContext.Provider>
 
 
     </div>
   )
 }
+
+
 
 export default App;

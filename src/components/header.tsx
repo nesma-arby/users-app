@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,24 +7,22 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import LocaleContext from '../LocaleContext';
 import i18n from '../i18n';
 import { useTranslation } from 'react-i18next';
-import { UserContext } from './user-context';
+import authContext from '../authContext';
 
 
 const Header = (props:any) => {
 
-  const name = localStorage.getItem('username') ;
-
   const { t } = useTranslation();
+
   const { locale } = useContext(LocaleContext);
 
+  const { authenticated , setAuthenticated } = useContext(authContext);
 
-  const user  = useContext(UserContext);
-
-  console.log(user,'user')
 
   const handleLogOut = () =>{
-    localStorage.removeItem('username');
-    localStorage.removeItem('authenticated');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('authenticated');
+    setAuthenticated(false);
     window.location.href = '/login';
   }
 
@@ -41,10 +39,10 @@ const Header = (props:any) => {
 
       <Container>
         
-    {user?.loggedIn &&  
-    <Navbar.Brand href="#home"> {t('greeting')},{name} </Navbar.Brand> }
+    {authenticated && 
+    <Navbar.Brand href="#home"> {t('greeting')},{sessionStorage.getItem('username')} </Navbar.Brand> }
 
-     {user?.loggedIn &&
+    {authenticated && 
       <Nav.Link onClick={handleLogOut} style={{padding:'0 30px'}}>{t('logout')}</Nav.Link>}
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

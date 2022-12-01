@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '../styles/login.scss';
@@ -7,6 +7,7 @@ import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import authContext from '../authContext';
 
 const Login = (props: any) => {
 
@@ -16,7 +17,9 @@ const Login = (props: any) => {
   const [errorMsg, setErrorMsg] = useState('')
   const navigate = useNavigate();
 
-     
+
+  const { setAuthenticated } = useContext(authContext);
+
 
   const checkUserExist = (users: any[]) => {
 
@@ -24,8 +27,11 @@ const Login = (props: any) => {
 
     if (returendUser.length > 0) {
 
-      localStorage.setItem('username', name)
-      localStorage.setItem("authenticated", 'true');
+      sessionStorage.setItem('username', name)
+      sessionStorage.setItem("authenticated", 'true');
+
+      /* update the Context value in a Provider from the Consumer? */
+      setAuthenticated(true);
 
       navigate("/");
     }
@@ -55,7 +61,7 @@ const Login = (props: any) => {
   }
 
 
- 
+
 
 
 
@@ -67,7 +73,7 @@ const Login = (props: any) => {
 
         <Form className='loginForm'>
 
-          <p style={{ color: 'red' , textAlign:'center' }}>{errorMsg}</p>
+          <p style={{ color: 'red', textAlign: 'center' }}>{errorMsg}</p>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label className='label'>{t('userName')}</Form.Label>
@@ -86,7 +92,7 @@ const Login = (props: any) => {
           </Form.Group>
 
           <Button variant="primary" type="button" onClick={handleLogin}>
-           {t('signIn')}
+            {t('signIn')}
           </Button>
 
           <Link className='link' to="/register">{t('registerAccount')}</Link>
