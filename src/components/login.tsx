@@ -1,115 +1,91 @@
-
-import React, { useContext, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import '../styles/login.scss';
-import { Link, Navigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useContext, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import "../styles/login.scss";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
-import authContext from '../authContext';
+import { useTranslation } from "react-i18next";
+import authContext from "../context/authContext";
 
-const Login = (props: any) => {
-
+const Login = () => {
+  
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('')
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
-
-
   const { setAuthenticated } = useContext(authContext);
 
-
   const checkUserExist = (users: any[]) => {
-
-    const returendUser = users.filter(u => (u.name === name) && (u.password === password));
+    const returendUser = users.filter(
+      (u) => u.name === name && u.password === password
+    );
 
     if (returendUser.length > 0) {
-
-      sessionStorage.setItem('username', name)
-      sessionStorage.setItem("authenticated", 'true');
-
+      localStorage.setItem("username", name);
+      localStorage.setItem("authenticated", "true");
       /* update the Context value in a Provider from the Consumer? */
       setAuthenticated(true);
-
       navigate("/");
+    } else {
+      setErrorMsg("sorry , username or password is not correct");
     }
-    else {
-      setErrorMsg('sorry , username or password is not correct')
-    }
-
-  }
+  };
 
   const handleLogin = () => {
+    setErrorMsg("");
 
-    setErrorMsg('');
-
-    if (name === '' || password === '') {
-      setErrorMsg('please fill all fields');
+    if (name === "" || password === "") {
+      setErrorMsg("please fill all fields");
       return;
     }
 
-    axios.get('http://localhost:3000/users').then((response) => {
-      console.log(response);
-      checkUserExist(response.data);
-
-    }, (error) => {
-      console.log(error);
-    });
-
-  }
-
-
-
+    axios.get("http://localhost:3000/users").then(
+      (response) => {
+        console.log(response);
+        checkUserExist(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
 
 
-
-  if (localStorage.getItem("authenticated")) { return (<Navigate replace to="/" />) }
-  else {
     return (
-
-      <div className='formContainer'>
-
-        <Form className='loginForm'>
-
-          <p style={{ color: 'red', textAlign: 'center' }}>{errorMsg}</p>
+      <div className="formContainer">
+        <Form className="loginForm">
+          <p style={{ color: "red", textAlign: "center" }}>{errorMsg}</p>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label className='label'>{t('userName')}</Form.Label>
-            <Form.Control type="text"
+            <Form.Label className="label">{t("userName")}</Form.Label>
+            <Form.Control
+              type="text"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label className='label'>{t('password')}</Form.Label>
-            <Form.Control type="password"
+            <Form.Label className="label">{t("password")}</Form.Label>
+            <Form.Control
+              type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
 
           <Button variant="primary" type="button" onClick={handleLogin}>
-            {t('signIn')}
+            {t("signIn")}
           </Button>
 
-          <Link className='link' to="/register">{t('registerAccount')}</Link>
-
+          <Link className="link" to="/register">
+            {t("registerAccount")}
+          </Link>
         </Form>
-
-
-
       </div>
-
     );
-  }
-
-};
-
-Login.propTypes = {
-
 };
 
 export default Login;

@@ -1,7 +1,6 @@
 import { render, waitFor, screen } from "@testing-library/react";
 import axios from "axios";
 import Home from './home';
-import axiosMock from "axios";
 
 jest.mock("axios");
 
@@ -26,7 +25,7 @@ const dummyUsers = [
         password: '111'
     },
 ];
-const resp = {data: dummyUsers};
+const resp = { data: dummyUsers };
 
 
 test("Featch Users List", async () => {
@@ -34,10 +33,10 @@ test("Featch Users List", async () => {
     axios.get.mockResolvedValue(resp);
 
     render(<Home />);
-    
-   const  UsersList = await waitFor(() => screen.findAllByTestId("user"));
-    
+
+    const UsersList = await waitFor(() => screen.findAllByTestId("user"));
+
     expect(UsersList).toHaveLength(3);
 
-    });
+});
 

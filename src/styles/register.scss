@@ -1,22 +1,21 @@
-
 // mobile first
 
 @mixin calcBorder($r) {
     border: $r solid gainsboro;
 }
 
-.formContainerStyle{
+.formContainerStyle {
     display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - 60px);
-    background-image: url('../bg.png');
+    background-image: url('../assets/bg.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% 100%;
 }
 
-.formStyle{
+.formStyle {
     width: 80%;
     margin: auto;
     @include calcBorder(5px);
@@ -26,34 +25,31 @@
 
 
 
-.formContainer{
+.formContainer {
 
-    @extend .formContainerStyle ;
+    @extend .formContainerStyle;
 
-    .registerForm{
-     
+    .registerForm {
+
         @extend .formStyle;
-    
 
-        .link{
+
+        .link {
             display: block;
             padding-top: 20px;
             text-decoration: none;
             text-align: center;
-            color:#fff;
+            color: #fff;
         }
 
-        button{
+        button {
             display: block;
             margin: auto;
         }
-    
+
         @media (min-width:992px) {
             width: 35%;
         }
     }
 
 }
-
-
-

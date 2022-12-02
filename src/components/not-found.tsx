@@ -1,18 +1,12 @@
 import React from "react";
-import PropTypes from 'prop-types';
-import'../styles/not-found.scss';
-
+import "../styles/not-found.scss";
 
 const NotFound = () => {
-    return (
-        <div>
-            <h1> Page not found </h1>
-        </div>
-    );
-};
-
-NotFound.propTypes = {
-    
+  return (
+    <div>
+      <h1> Page not found </h1>
+    </div>
+  );
 };
 
 export default NotFound;
