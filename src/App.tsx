@@ -27,7 +27,7 @@ function SomeOtherComponent() {
   const navigate = useNavigate();
   const [locale, setLocale] = useState(i18n.language);
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(localStorage.getItem('authenticated') === 'true');
 
   // for protecting Routes
   useEffect(() => {
