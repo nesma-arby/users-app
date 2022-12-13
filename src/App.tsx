@@ -1,12 +1,12 @@
 import React, { Suspense, useState } from "react";
 import "./App.scss";
-import Header from "./components/header";
-import Login from "./components/login";
-import Register from "./components/register";
+import Header from "./components/Header";
+import Login from "./components/Login";
+import Register from "./components/Register";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/home";
+import Home from "./components/Home";
 import i18n from "./i18n";
-import Loading from "./components/loading";
+import Loading from "./components/Loading";
 import LocaleContext from "./context/LocaleContext";
 import { ThemeProvider } from "react-bootstrap";
 import { Helmet } from "react-helmet";
@@ -14,6 +14,7 @@ import NotFound from "./components/not-found";
 import authContext from "./context/authContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ProtectedComponent from "./components/ProtectedComponent";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function SomeOtherComponent() {
   const [authenticated, setAuthenticated] = useState(localStorage.getItem('authenticated') === 'true');
 
   // for protecting Routes
+  // if user logged in so he can't see the login or register untile he log out
   useEffect(() => {
     JSON.parse(localStorage.getItem("authenticated") || "{}") === true
       ? navigate("/")
@@ -54,13 +56,16 @@ function SomeOtherComponent() {
               <Header />
 
               <Routes>
+
                 <Route path="/login" element={<Login />} />
-
                 <Route path="/register" element={<Register />} />
-
-                <Route path="/" element={<Home />} />
-
+                <Route path="/" element={
+                  <ProtectedComponent isLoggedIn={localStorage.getItem('authenticated')}>
+                    <Home />
+                  </ProtectedComponent>
+                } />
                 <Route path="*" element={<NotFound />} />
+
               </Routes>
             </ThemeProvider>
           </Suspense>

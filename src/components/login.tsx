@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import authContext from "../context/authContext";
 
 const Login = () => {
-  
   const { t } = useTranslation();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -52,40 +51,39 @@ const Login = () => {
     );
   };
 
+  return (
+    <div className="formContainer">
+      <Form className="loginForm">
+        <p style={{ color: "red", textAlign: "center" }}>{errorMsg}</p>
 
-    return (
-      <div className="formContainer">
-        <Form className="loginForm">
-          <p style={{ color: "red", textAlign: "center" }}>{errorMsg}</p>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label className="label">{t("userName")}</Form.Label>
+          <Form.Control
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label className="label">{t("userName")}</Form.Label>
-            <Form.Control
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label className="label">{t("password")}</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label className="label">{t("password")}</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
+        <Button variant="primary" type="button" onClick={handleLogin}>
+          {t("signIn")}
+        </Button>
 
-          <Button variant="primary" type="button" onClick={handleLogin}>
-            {t("signIn")}
-          </Button>
-
-          <Link className="link" to="/register">
-            {t("registerAccount")}
-          </Link>
-        </Form>
-      </div>
-    );
+        <Link className="link" to="/register">
+          {t("registerAccount")}
+        </Link>
+      </Form>
+    </div>
+  );
 };
 
 export default Login;
